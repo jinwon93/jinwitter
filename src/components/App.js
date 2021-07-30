@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AppRouter from "components/Router";
-import { authService } from "fbase";
+import { authService } from "jbase";
 
 function App() {
   
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <AppRouter isLoggedIn={isLoggedIn} />
-      <footer>&copy; {new Date().getFullYear()} Nwitter</footer>
+      <footer>&copy; {new Date().getFullYear()} jwitter</footer>
     </>
   );
 }
