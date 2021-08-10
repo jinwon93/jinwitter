@@ -1,31 +1,26 @@
-import React from "react";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import { dbService } from "jbase";
+import Jweet from "components/Jweet";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [jweet, setJweet] = useState("");
   const [jweets, setJweets] = useState([]);
-  const getJweets = async () => {
-    const dbJweets = await dbService.collection("jweets").get();
-    
-    dbJweets.forEach((document) => {
-        const jweetObject ={
-            ...document.data(),
-            id:document.id,
-        };
-      setJweet((prev) => [jweetObject, ...prev]);
 
-    });
-  };
-  
   useEffect(() => {
-    getJweets();
+    dbService.collection("jweets").onSnapshot((snapshot) => {
+      const jweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setJweets(jweetArray);
+    });
   }, []);
   const onSubmit = async (event) => {
     event.preventDefault();
-    await dbService.collection("jweet").add({
-      jweet,
+    await dbService.collection("jweets").add({
+      text: jweet,
       createdAt: Date.now(),
+      creatorId:userObj.uid,
     });
     setJweet("");
   };
@@ -49,11 +44,9 @@ const Home = () => {
         <input type="submit" value="Jweet" />
       </form>
       <div>
-          {jweets.map((jweet)=>(
-              <div key={jweet.id}>
-                  <h4>{jweet.jweet}</h4>
-              </div>    
-          ))}
+        {jweets.map((jweet) => (
+          <Jweet key={jweet.id} jweetObj={jweet} />
+        ))}
       </div>
     </div>
   );

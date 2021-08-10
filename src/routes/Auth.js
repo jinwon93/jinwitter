@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { authService } from "jbase";
-import { firebaseInstance } from './../jbase';
+import { firebaseInstance } from 'jbase';
 
 
 const Auth = () => {
