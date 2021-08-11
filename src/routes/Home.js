@@ -20,7 +20,7 @@ const Home = ({ userObj }) => {
     await dbService.collection("jweets").add({
       text: jweet,
       createdAt: Date.now(),
-      creatorId:userObj.uid,
+      creatorId: userObj.uid,
     });
     setJweet("");
   };
@@ -45,7 +45,11 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {jweets.map((jweet) => (
-          <Jweet key={jweet.id} jweetObj={jweet} />
+          <Jweet
+            key={jweet.id}
+            jweetObj={jweet}
+            isOwner={jweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>
